@@ -199,6 +199,12 @@
       colordiff
       wl-clipboard # wl-copy, used by tmux copy mode (Plasma 6 runs Wayland)
       tmux-mem-cpu-load
+
+      # --- LaTeX (includes latexpand) ---
+      (texlive.combine { inherit (texlive) scheme-medium latexpand; })
+
+      # --- Apps ---
+      firefox
     ];
 
     # was .zshenv: only ~/.local/bin survives; poetry/homebrew/TeXShop paths are macOS-only
