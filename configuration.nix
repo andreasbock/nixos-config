@@ -196,7 +196,52 @@
       ripgrep
       fd
       jq
+      colordiff
     ];
+
+    # was .zshenv: only ~/.local/bin survives; poetry/homebrew/TeXShop paths are macOS-only
+    home.sessionPath = [ "$HOME/.local/bin" ];
+
+    # --- .aliases ---
+    programs.zsh = {
+      enable = true;
+      shellAliases = {
+        up = "cd ..";
+        ll = "ls -la";
+        l = "ls -1";
+        lr = "l -R";
+        diff = "colordiff";
+        gst = "git status";
+        gb = "git branch";
+        gl = "git log";
+        gd = "git diff";
+        vi = "vim";
+        mcm = "make clean; clear; make";
+        "py.test" = "python -m pytest";
+      };
+    };
+
+    # --- .gitconfig + .gitignore_global ---
+    programs.git = {
+      enable = true;
+      ignores = [ "*~" ".DS_Store" ];
+      settings = {
+        user.name = "Andreas Bock";
+        # user.email = "...";
+        core.autocrlf = "input";
+        rebase.autoStash = true;
+        alias = {
+          st = "status";
+          ci = "commit -v";
+          co = "checkout";
+          br = "branch";
+          unstage = "reset HEAD --";
+          last = "log -1 HEAD";
+          pullm = "pull --rebase origin main";
+          pushf = "push --force-with-lease";
+        };
+      };
+    };
 
     programs.home-manager.enable = true;
 
