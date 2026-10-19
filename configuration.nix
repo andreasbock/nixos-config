@@ -420,6 +420,40 @@
       };
     };
 
+    # Alacritty: chrome-free terminal that opens straight into tmux.
+    # No title bar: move with Meta+drag, resize with Meta+right-drag.
+    programs.alacritty = {
+      enable = true;
+      settings = {
+        terminal.shell.program = "${pkgs.tmux}/bin/tmux";
+        window.decorations = "None";
+        font = {
+          normal.family = "Hack";
+          size = 12;
+        };
+        # https://terminalcolors.com/themes/github/dark/ (their Alacritty file)
+        colors = {
+          primary = { foreground = "#e6edf3"; background = "#010409"; };
+          cursor = { text = "#010409"; cursor = "#e6edf3"; };
+          selection = { text = "#e6edf3"; background = "#264f78"; };
+          normal = {
+            black = "#484f58"; red = "#ff7b72"; green = "#3fb950"; yellow = "#d29922";
+            blue = "#58a6ff"; magenta = "#bc8cff"; cyan = "#39c5cf"; white = "#b1bac4";
+          };
+          bright = {
+            black = "#6e7681"; red = "#ffa198"; green = "#56d364"; yellow = "#e3b341";
+            blue = "#79c0ff"; magenta = "#d2a8ff"; cyan = "#56d4dd"; white = "#ffffff";
+          };
+        };
+      };
+    };
+
+    # Default terminal for KDE (Ctrl+Alt+T, Dolphin "Open Terminal Here")
+    programs.plasma.configFile.kdeglobals.General = {
+      TerminalApplication = "alacritty";
+      TerminalService = "Alacritty.desktop";
+    };
+
     # Window decoration: classic KDE 3 "Plastik" (box/line buttons instead of
     # Breeze's chevrons). Ships with kdePackages.aurorae, installed by Plasma.
     programs.plasma.workspace.windowDecorations = {
