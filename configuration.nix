@@ -96,6 +96,9 @@
     ];
   };
 
+  # Hack: monospace font used by the Konsole profile
+  fonts.packages = [ pkgs.hack-font ];
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -382,7 +385,36 @@
     programs.konsole = {
       enable = true;
       defaultProfile = "tmux";
-      profiles.tmux.command = "${pkgs.tmux}/bin/tmux";
+      profiles.tmux = {
+        command = "${pkgs.tmux}/bin/tmux";
+        colorScheme = "GitHubDark";
+        font = { name = "Hack"; size = 12; };
+      };
+
+      # https://terminalcolors.com/themes/github/dark/
+      customColorSchemes.GitHubDark = {
+        General.Description = "GitHub Dark";
+        Foreground.Color = "230,237,243";
+        ForegroundIntense.Color = "255,255,255";
+        Background.Color = "1,4,9";
+        BackgroundIntense.Color = "1,4,9";
+        Color0.Color = "72,79,88";
+        Color0Intense.Color = "110,118,129";
+        Color1.Color = "255,123,114";
+        Color1Intense.Color = "255,161,152";
+        Color2.Color = "63,185,80";
+        Color2Intense.Color = "86,211,100";
+        Color3.Color = "210,153,34";
+        Color3Intense.Color = "227,179,65";
+        Color4.Color = "88,166,255";
+        Color4Intense.Color = "121,192,255";
+        Color5.Color = "188,140,255";
+        Color5Intense.Color = "210,168,255";
+        Color6.Color = "57,197,207";
+        Color6Intense.Color = "86,212,221";
+        Color7.Color = "177,186,196";
+        Color7Intense.Color = "255,255,255";
+      };
     };
 
     # Window decoration: classic KDE 3 "Plastik" (box/line buttons instead of
