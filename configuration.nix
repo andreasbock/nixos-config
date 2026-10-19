@@ -114,6 +114,7 @@
      wget
      curl
      google-chrome
+     klassy # KWin window decoration; must be system-wide so KWin finds it
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -370,6 +371,14 @@
       ui.colorScheme = "Breeze Dark";
       editor.theme.name = "Breeze Dark";
     };
+
+    # Window buttons: Klassy decoration with traditional icons
+    # (box = maximise, line = minimise) instead of Breeze's chevrons
+    programs.plasma.workspace.windowDecorations = {
+      library = "org.kde.klassy";
+      theme = "Klassy";
+    };
+    programs.plasma.configFile."klassy/klassyrc".Windeco.ButtonIconStyle = "StyleTraditional";
 
     programs.home-manager.enable = true;
 
