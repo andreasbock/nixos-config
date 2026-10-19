@@ -337,6 +337,24 @@
       '';
     };
 
+    # --- Per-project dev shells: `use flake` in a repo's .envrc ---
+    programs.direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+    };
+
+    # --- PDF viewer: vim keys, auto-reloads (good for LaTeX) ---
+    programs.zathura = {
+      enable = true;
+      options.selection-clipboard = "clipboard";
+    };
+
+    xdg.mimeApps = {
+      enable = true;
+      defaultApplications."application/pdf" = [ "org.pwmt.zathura.desktop" ];
+    };
+
     programs.home-manager.enable = true;
 
     # Do not change after first install.
