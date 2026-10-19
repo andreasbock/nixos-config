@@ -371,6 +371,13 @@
       editor.theme.name = "Breeze Dark";
     };
 
+    # Dolphin: Details (list) view for every folder, like Finder's list view
+    programs.plasma.configFile.dolphinrc.General.GlobalViewProps = true;
+    programs.plasma.dataFile."dolphin/view_properties/global/.directory".Dolphin = {
+      Version = 4;
+      ViewMode = 1; # 0 = icons, 1 = details, 2 = compact
+    };
+
     # Konsole: every new window starts tmux
     programs.konsole = {
       enable = true;
