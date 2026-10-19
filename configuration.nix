@@ -99,6 +99,13 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  # Enable flakes (this config is built from ./flake.nix).
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # Lets prebuilt binaries (pip/uv wheels with C extensions, VS Code
+  # extensions, downloaded toolchains) find a dynamic linker on NixOS.
+  programs.nix-ld.enable = true;
+
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
