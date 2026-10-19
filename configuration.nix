@@ -361,6 +361,16 @@
       defaultApplications."application/pdf" = [ "org.pwmt.zathura.desktop" ];
     };
 
+    # --- KDE Plasma settings (plasma-manager) ---
+    programs.plasma.enable = true;
+
+    # Kate: dark window colors + dark editor theme
+    programs.kate = {
+      enable = true;
+      ui.colorScheme = "Breeze Dark";
+      editor.theme.name = "Breeze Dark";
+    };
+
     programs.home-manager.enable = true;
 
     # Do not change after first install.
