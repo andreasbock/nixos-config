@@ -243,6 +243,56 @@
       };
     };
 
+    # --- .vimrc (plugins come from nixpkgs instead of pathogen) ---
+    programs.vim = {
+      enable = true;
+      plugins = [ pkgs.vimPlugins.syntastic ];
+      extraConfig = ''
+        syntax on
+        filetype plugin indent on
+
+        set statusline+=%#warningmsg#
+        set statusline+=%{SyntasticStatuslineFlag()}
+        set statusline+=%*
+
+        let g:syntastic_always_populate_loc_list = 1
+        let g:syntastic_auto_loc_list = 1
+        let g:syntastic_check_on_open = 1
+        let g:syntastic_check_on_wq = 0
+      '';
+    };
+
+    # --- nvim/init.vim ---
+    programs.neovim = {
+      enable = true;
+      extraConfig = ''
+        set tabstop=4
+        set shiftwidth=4
+        set softtabstop=4
+        set expandtab
+        set autoindent
+        set smartindent
+
+        syntax on
+        filetype plugin indent on
+
+        set number
+        set relativenumber
+
+        set incsearch
+        set hlsearch
+        set ignorecase
+        set smartcase
+
+        set cursorline
+        set wrap
+        set scrolloff=8
+
+        set termguicolors
+        colorscheme desert
+      '';
+    };
+
     programs.home-manager.enable = true;
 
     # Do not change after first install.
