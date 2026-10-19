@@ -169,6 +169,35 @@
   home-manager.backupFileExtension = "backup";
 
   home-manager.users.andreas = {
+    home.packages = with pkgs; [
+      # --- Python ---
+      python3
+      uv
+      poetry
+      ruff
+      pyright
+
+      # --- C / C++ ---
+      # gcc is the compiler; clang-tools gives clangd/clang-format/clang-tidy.
+      # Not adding clang itself: its cc/c++ wrappers collide with gcc's.
+      # Use `nix shell nixpkgs#clang` (or a project flake) when you need it.
+      gcc
+      clang-tools
+      gnumake
+      cmake
+      ninja
+      meson
+      pkg-config
+      gdb
+      valgrind
+      bear # generates compile_commands.json for clangd
+
+      # --- General ---
+      ripgrep
+      fd
+      jq
+    ];
+
     programs.home-manager.enable = true;
 
     # Do not change after first install.
