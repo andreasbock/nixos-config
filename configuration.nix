@@ -371,6 +371,13 @@
       editor.theme.name = "Breeze Dark";
     };
 
+    # Konsole: every new window starts tmux
+    programs.konsole = {
+      enable = true;
+      defaultProfile = "tmux";
+      profiles.tmux.command = "${pkgs.tmux}/bin/tmux";
+    };
+
     # Window decoration: classic KDE 3 "Plastik" (box/line buttons instead of
     # Breeze's chevrons). Ships with kdePackages.aurorae, installed by Plasma.
     programs.plasma.workspace.windowDecorations = {
