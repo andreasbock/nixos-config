@@ -197,6 +197,8 @@
       fd
       jq
       colordiff
+      wl-clipboard # wl-copy, used by tmux copy mode (Plasma 6 runs Wayland)
+      tmux-mem-cpu-load
     ];
 
     # was .zshenv: only ~/.local/bin survives; poetry/homebrew/TeXShop paths are macOS-only
@@ -290,6 +292,48 @@
 
         set termguicolors
         colorscheme desert
+      '';
+    };
+
+    # --- .tmux.conf ---
+    # Prefix Ctrl-a. Ctrl-a | / - split, h/j/k/l move, arrows resize,
+    # z zoom, a last pane, x kill, Space cycle layouts, r reload.
+    programs.tmux = {
+      enable = true;
+      prefix = "C-a";
+      keyMode = "vi";
+      mouse = true;
+      extraConfig = ''
+        bind '|' split-window -h -c "#{pane_current_path}"
+        bind '-' split-window -v -c "#{pane_current_path}"
+        bind c new-window -c "#{pane_current_path}"
+
+        bind a last-pane
+        bind h select-pane -L
+        bind j select-pane -D
+        bind k select-pane -U
+        bind l select-pane -R
+        bind z resize-pane -Z
+
+        bind -r Left resize-pane -L 2
+        bind -r Right resize-pane -R 2
+        bind -r Down resize-pane -D 2
+        bind -r Up resize-pane -U 2
+
+        bind , command-prompt "rename-window '%%'"
+        bind x confirm-before "kill-pane"
+        bind Space next-layout
+        bind r source-file ~/.config/tmux/tmux.conf \; display-message "Config reloaded"
+
+        # vi copy mode -> Wayland clipboard
+        bind '[' copy-mode
+        bind ']' paste-buffer
+        bind-key -T copy-mode-vi v send-keys -X begin-selection
+        bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
+        bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "wl-copy"
+
+        set -g status-interval 2
+        set -g status-right "#(tmux-mem-cpu-load 2) #H"
       '';
     };
 
