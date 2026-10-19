@@ -226,7 +226,10 @@
         gb = "git branch";
         gl = "git log";
         gd = "git diff";
-        vi = "vim";
+        vi = "nvim";
+        vim = "nvim";
+        nixrb = "sudo nixos-rebuild build"; 
+        nixsw = "sudo nixos-rebuild switch"; 
         mcm = "make clean; clear; make";
         "py.test" = "python -m pytest";
       };
