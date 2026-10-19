@@ -17,9 +17,11 @@
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-    # --- Networking / locale --------------------------------------------
+  # --- Networking / locale --------------------------------------------
   networking.hostName = "nixos"; # Define your hostname.
-  networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  # Disabled: wpa_supplicant conflicts with NetworkManager (build fails
+  # with an assertion). NetworkManager handles wifi itself.
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
