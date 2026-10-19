@@ -159,4 +159,19 @@
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "26.05"; # Did you read the comment?
 
+  # ======================================================================
+  # User environment (Home Manager), ported from ~/tmp/dotfiles
+  # ======================================================================
+
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
+  # Existing ~/.zshrc etc. get renamed to *.backup instead of failing the build
+  home-manager.backupFileExtension = "backup";
+
+  home-manager.users.andreas = {
+    programs.home-manager.enable = true;
+
+    # Do not change after first install.
+    home.stateVersion = "26.05";
+  };
 }
