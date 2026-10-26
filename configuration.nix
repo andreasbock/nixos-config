@@ -388,6 +388,11 @@
       fixedWidth = { family = "Hack";      pointSize = 12; };  # editor/monospace font
     };
 
+    programs.plasma.input.keyboard = {
+      layouts = [ { layout = "dk"; } ];
+      options = [ ];
+    };
+
     programs.plasma.shortcuts.kwin = {
       "Window Maximize" = "Meta+M";
       "Window Minimize" = "Meta+D";
