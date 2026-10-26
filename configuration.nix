@@ -378,6 +378,24 @@
     # --- KDE Plasma settings (plasma-manager) ---
     programs.plasma.enable = true;
 
+    # --- Fonts ---
+    programs.plasma.fonts = {
+      general    = { family = "Noto Sans"; pointSize = 12; };  # default is 10
+      menu       = { family = "Noto Sans"; pointSize = 12; };
+      toolbar    = { family = "Noto Sans"; pointSize = 12; };
+      windowTitle = { family = "Noto Sans"; pointSize = 12; };
+      small      = { family = "Noto Sans"; pointSize = 10; };  # default is 8
+      fixedWidth = { family = "Hack";      pointSize = 12; };  # editor/monospace font
+    };
+
+    programs.plasma.shortcuts.kwin = {
+      "Window Maximize" = "Meta+M";
+      "Window Minimize" = "Meta+D";
+      "Show Desktop"    = "none";
+      "Walk Through Windows"           = [ "Ctrl+Tab" "Alt+Tab" ];
+      "Walk Through Windows (Reverse)" = [ "Ctrl+Shift+Tab" "Alt+Shift+Tab" ];
+    };
+
     # Kate: dark window colors + dark editor theme
     programs.kate = {
       enable = true;
