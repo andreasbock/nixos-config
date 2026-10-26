@@ -303,7 +303,7 @@
         set scrolloff=8
 
         set termguicolors
-        colorscheme desert
+        colorscheme vim
       '';
     };
 
@@ -346,6 +346,14 @@
 
         set -g status-interval 2
         set -g status-right "#(tmux-mem-cpu-load 2) #H"
+
+        # Copying/pasting
+        set -g mouse on
+        set -g set-clipboard on
+
+        # Bind 'y' in vi-copy mode to pipe to wl-copy
+        bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
+        bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "wl-copy"
       '';
     };
 
@@ -384,57 +392,28 @@
       ViewMode = 1; # 0 = icons, 1 = details, 2 = compact
     };
 
-    # Konsole: every new window starts tmux
-    programs.konsole = {
-      enable = true;
-      defaultProfile = "tmux";
-      profiles.tmux = {
-        command = "${pkgs.tmux}/bin/tmux";
-        colorScheme = "GitHubDark";
-        font = { name = "Hack"; size = 12; };
-      };
-
-      # https://terminalcolors.com/themes/github/dark/
-      customColorSchemes.GitHubDark = {
-        General.Description = "GitHub Dark";
-        Foreground.Color = "230,237,243";
-        ForegroundIntense.Color = "255,255,255";
-        Background.Color = "1,4,9";
-        BackgroundIntense.Color = "1,4,9";
-        Color0.Color = "72,79,88";
-        Color0Intense.Color = "110,118,129";
-        Color1.Color = "255,123,114";
-        Color1Intense.Color = "255,161,152";
-        Color2.Color = "63,185,80";
-        Color2Intense.Color = "86,211,100";
-        Color3.Color = "210,153,34";
-        Color3Intense.Color = "227,179,65";
-        Color4.Color = "88,166,255";
-        Color4Intense.Color = "121,192,255";
-        Color5.Color = "188,140,255";
-        Color5Intense.Color = "210,168,255";
-        Color6.Color = "57,197,207";
-        Color6Intense.Color = "86,212,221";
-        Color7.Color = "177,186,196";
-        Color7Intense.Color = "255,255,255";
-      };
-    };
-
     # Alacritty: chrome-free terminal that opens straight into tmux.
     # No title bar: move with Meta+drag, resize with Meta+right-drag.
     programs.alacritty = {
       enable = true;
       settings = {
         terminal.shell.program = "${pkgs.tmux}/bin/tmux";
-        window.decorations = "None";
+
+        # --- Add this window block ---
+        window = {
+          decorations = "None";
+          opacity = 1.0;     # Explicitly forces 100% opaque solid background
+          blur = false;      # Disables background compositor blending
+        };
+
         font = {
           normal.family = "Hack";
           size = 12;
         };
         # https://terminalcolors.com/themes/github/dark/ (their Alacritty file)
         colors = {
-          primary = { foreground = "#e6edf3"; background = "#010409"; };
-          cursor = { text = "#010409"; cursor = "#e6edf3"; };
+          primary = { foreground = "#e6edf3"; background = "#000000"; };
+          cursor = { text = "#000000"; cursor = "#e6edf3"; };
           selection = { text = "#e6edf3"; background = "#264f78"; };
           normal = {
             black = "#484f58"; red = "#ff7b72"; green = "#3fb950"; yellow = "#d29922";
@@ -462,6 +441,16 @@
     };
 
     programs.home-manager.enable = true;
+
+    # Launch these at login
+    xdg.configFile."autostart/alacritty.desktop".source =
+      "${pkgs.alacritty}/share/applications/Alacritty.desktop";
+    xdg.configFile."autostart/google-chrome.desktop".source =
+      "${pkgs.google-chrome}/share/applications/google-chrome.desktop";
+
+    # Start each login with an empty session, so Plasma doesn't also
+    # reopen whatever was running when you last logged out
+    # programs.plasma.configFile.ksmserverrc.General.loginMode = "emptySession";
 
     # Do not change after first install.
     home.stateVersion = "26.05";
