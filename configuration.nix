@@ -257,55 +257,86 @@
       };
     };
 
-    # --- .vimrc (plugins come from nixpkgs instead of pathogen) ---
-    programs.vim = {
+    # --- Neovim (nixvim) ---
+    programs.nixvim = {
       enable = true;
-      plugins = [ pkgs.vimPlugins.syntastic ];
-      extraConfig = ''
-        syntax on
-        filetype plugin indent on
+      viAlias = true;
+      vimAlias = true;
+      defaultEditor = true;
 
-        set statusline+=%#warningmsg#
-        set statusline+=%{SyntasticStatuslineFlag()}
-        set statusline+=%*
+      # was: set tabstop=4 ... etc.
+    opts = {
+        tabstop = 4;
+        shiftwidth = 4;
+        softtabstop = 4;
+        expandtab = true;
+        autoindent = true;
+        smartindent = true;
 
-        let g:syntastic_always_populate_loc_list = 1
-        let g:syntastic_auto_loc_list = 1
-        let g:syntastic_check_on_open = 1
-        let g:syntastic_check_on_wq = 0
-      '';
+        number = true;
+        relativenumber = true;
+
+        incsearch = true;
+        hlsearch = true;
+        ignorecase = true;
+        smartcase = true;
+
+        cursorline = true;
+        wrap = true;
+        scrolloff = 8;
+
+        termguicolors = true;
     };
 
-    # --- nvim/init.vim ---
-    programs.neovim = {
-      enable = true;
-      extraConfig = ''
-        set tabstop=4
-        set shiftwidth=4
-        set softtabstop=4
-        set expandtab
-        set autoindent
-        set smartindent
+    colorscheme = "vim";
 
-        syntax on
-        filetype plugin indent on
+    globals.mapleader = " ";
 
-        set number
-        set relativenumber
+    plugins = {
+        web-devicons.enable = true;   # telescope wants icons
+        fugitive.enable = true;
+        nix.enable = true;
 
-        set incsearch
-        set hlsearch
-        set ignorecase
-        set smartcase
+        telescope = {
+            enable = true;
+            keymaps = {
+                "<leader>ff" = "find_files";
+                "<leader>fg" = "live_grep";
+                "<leader>fb" = "buffers";
+            };
+        };
 
-        set cursorline
-        set wrap
-        set scrolloff=8
+        treesitter = {
+            enable = true;
+            highlight.enable = true;
+            indent.enable = true;
+            grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+            c cpp python nix lua bash latex
+            ];
+        };
 
-        set termguicolors
-        colorscheme vim
-      '';
+        lspconfig.enable = true;   # supplies default server configs
     };
+
+    lsp = {
+        servers = {
+            clangd.enable = true;
+            pyright.enable = true;
+        };
+        keymaps = [
+            { key = "gd"; lspBufAction = "definition"; }
+            { key = "gr"; lspBufAction = "references"; }
+            { key = "K";  lspBufAction = "hover"; }
+            { key = "<leader>rn"; lspBufAction = "rename"; }
+        ];
+    };
+
+    keymaps = [
+        { mode = "n"; key = "<Esc>"; action = "<cmd>nohlsearch<CR>"; }
+    ];
+
+    clipboard.providers.wl-copy.enable = true;
+    }; 
 
     # --- .tmux.conf ---
     # Prefix Ctrl-a. Ctrl-a | / - split, h/j/k/l move, arrows resize,
