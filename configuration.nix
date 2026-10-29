@@ -80,7 +80,18 @@
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.libinput.enable = true;
+  services.libinput.enable = true;
+  services.udev.extraHwdb = ''
+    evdev:atkbd:*
+      KEYBOARD_KEY_3a=esc
+  '';
+
+  # Hardware
+  hardware.trackpoint = {
+    enable = true;
+    speed = 97;         # Max speed (Default is 97)
+    sensitivity = 228;  # Max sensitivity (Default is 128)
+  };
 
   # --- Users -----------------------------------------------------------
   programs.zsh.enable = true; # needed system-wide for zsh as a login shell
@@ -112,12 +123,16 @@
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-     git
-     pkgs.neovim
-     wget
-     curl
-     google-chrome
+    git
+    pkgs.neovim
+    wget
+    curl
+    google-chrome
+    slack
+    spotify
+    obsidian
   ];
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -230,6 +245,7 @@
         vim = "nvim";
         nixrb = "sudo nixos-rebuild build"; 
         nixsw = "sudo nixos-rebuild switch"; 
+        conf = "vi ~/nixos-config/configuration.nix"; 
         mcm = "make clean; clear; make";
         "py.test" = "python -m pytest";
       };
@@ -335,7 +351,10 @@
         { mode = "n"; key = "<Esc>"; action = "<cmd>nohlsearch<CR>"; }
     ];
 
-    clipboard.providers.wl-copy.enable = true;
+    clipboard = {
+      register = "unnamedplus";
+      providers.wl-copy.enable = true;
+    };
     }; 
 
     # --- .tmux.conf ---
@@ -495,7 +514,7 @@
     };
 
     programs.home-manager.enable = true;
-
+    
     # Launch these at login
     xdg.configFile."autostart/alacritty.desktop".source =
       "${pkgs.alacritty}/share/applications/Alacritty.desktop";
